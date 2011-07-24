@@ -58,7 +58,13 @@ class ApplicationController
         return $forward;
     }
     
-    private function _getResource(Request $request, $resource)
+    /**
+     *
+     * @param Request $request
+     * @param type $resource
+     * @return type 
+     */
+    private function _getResource(Request $request, $resourceName)
     {
         // get previous command and it's execution status
         $commandString = $request->getProperty('command');
@@ -72,7 +78,7 @@ class ApplicationController
             $status = 0;
         }
         
-        $method = "get{$resource}";
+        $method = "get{$resourceName}";
         
         // find resource for previous command and it's status
         $resource = $this->_controllerMap->{$method}($commandString, 0);
@@ -94,14 +100,22 @@ class ApplicationController
         return $resource;
     }
     
+    /**
+     *
+     * @param Request $request
+     * @return void|null
+     * @throws ApplicationException
+     */
     public function getCommand(Request $request)
     {
         $previousCommand = $request->getLastCommand();
         
+        // it's the first command in this request
         if (!$previousCommand)
         {
             $command = $request->getProperty('command');
             
+            // no command property, using default 
             if (!$command)
             {
                 $request->setProperty('command', 'default');
@@ -109,6 +123,7 @@ class ApplicationController
                 return self::$_defaultCommand;
             }
         }
+        // the command has alrwady been run in this request
         else
         {
             $command = $this->getForward($request);
@@ -118,5 +133,56 @@ class ApplicationController
                 return null;
             }
         }
+        
+        // now we have a command name in $command
+        // turning it into a Command object
+        $commandObject = $this->resolveCommand($command);
+        
+        if (!$commandObject)
+        {
+            throw new \myne\base\ApplicationException('Could not resolve command');
+        }
+        
+        $commandClass = get_class($commandObject);
+        
+        if (isset($this->_invoked[$commandClass]))
+        {
+            throw new \myne\base\ApplicationException('Circular forwarding error');
+        }
+        
+        $this->_invoked[$commandClass] = 1;
+        
+        return $commandObject;
+    }
+    
+    /**
+     *
+     * @param type $command
+     * @return Command|null 
+     */
+    public function resolveCommand($command)
+    {
+        $classroot = $this->_controllerMap->getClassroot($command);
+        
+        $filepath = "command/{$classroot}.php";
+        
+        $classname = "\\myne\\command\\{$classroot}";
+        
+        if (file_exists($filepath))
+        {
+            require_once("{$filepath}");
+            
+            if (class_exists($classname))
+            {
+                $commandClass = new \ReflectionClass($classname);
+                
+                if ($commandClass->isSubclassOf(self::$_baseCommand))
+                {
+                    return $commandClass->newInstance();
+                }
+            }
+        }
+        
+        return null;
     }
 }
