@@ -72,13 +72,15 @@ class ApplicationHelper
         
         $options = simplexml_load_file($this->_configFile);
         
+        $this->_ensure($options instanceof \SimpleXMLElement, 'Could not read options file');
+        
         $dsn = (string) $options->dsn;
         
         $this->_ensure($dsn, 'No DSN found');
         
         \myne\base\ApplicationRegistry::setDSN($dsn);
         
-        $map = new ControllerMap();
+        $controllerMap = new ControllerMap();
         
         foreach ($options->control->view as $defaultView)
         {
@@ -86,11 +88,11 @@ class ApplicationHelper
             
             $status = \myne\command\Command::statuses($viewStatus);
             
-            $map->addView('default', $status, (string) $defaultView);
+            $controllerMap->addView('default', $status, (string) $defaultView);
         }
         
         // ... more parse code omitted ...
-        \myne\base\ApplicationRegistry::setControllerMap($map);
+        \myne\base\ApplicationRegistry::setControllerMap($controllerMap);
     }
     
     private function _ensure($expression, $message)

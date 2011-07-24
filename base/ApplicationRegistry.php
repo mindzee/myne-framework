@@ -99,18 +99,21 @@ class ApplicationRegistry extends Registry
         {
             $controllerMap = $instance->getControllerMap();
             
+            var_dump($controllerMap);
+            die();
+            
             $instance->applicationController = new \myne\controller\ApplicationController($controllerMap);
         }
         
         return $instance->applicationController;
     }
     
-    public function setControllerMap(\myne\controller\ControllerMap $controllerMap)
+    public static function setControllerMap(\myne\controller\ControllerMap $controllerMap)
     {
         self::getInstance()->_set('ControllerMap', $controllerMap);
     }
     
-    public function getControllerMap()
+    public static function getControllerMap()
     {
         return self::getInstance()->_get('ControllerMap');
     }
