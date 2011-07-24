@@ -7,6 +7,7 @@ namespace myne\controller;
 
 require_once('base/ApplicationRegistry.php');
 require_once('base/ApplicationException.php');
+require_once('controller/ControllerMap.php');
 
 /**
  * Loads application configuration 
@@ -84,9 +85,9 @@ class ApplicationHelper
         
         foreach ($options->control->view as $defaultView)
         {
-            $viewStatus = trim($defaultView['status']);
+            $statusString = trim($defaultView['status']);
             
-            $status = \myne\command\Command::statuses($viewStatus);
+            $status = \myne\command\Command::statuses($statusString);
             
             $controllerMap->addView('default', $status, (string) $defaultView);
         }

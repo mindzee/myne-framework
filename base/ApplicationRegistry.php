@@ -18,7 +18,7 @@ class ApplicationRegistry extends Registry
 {
     private static $_instance;
 
-    private $_freezeDir = 'temp/data';
+    private $_freezeDir = 'data';
 
     private $_values = array();
 

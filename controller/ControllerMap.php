@@ -34,7 +34,7 @@ class ControllerMap
         return $command;
     }
     
-    public function addView($view, $command = 'default', $status = 0)
+    public function addView($command = 'default', $status = 0, $view)
     {
         $this->_viewMap[$command][$status] = $view;
     }
@@ -49,7 +49,7 @@ class ControllerMap
         return null;
     }
     
-    public function addForward($command, $newCommand, $status = 0)
+    public function addForward($command, $status = 0, $newCommand)
     {
         $this->_forwardMap[$command][$status] = $newCommand;
     }
