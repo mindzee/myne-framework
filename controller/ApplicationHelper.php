@@ -72,13 +72,25 @@ class ApplicationHelper
         
         $options = simplexml_load_file($this->_configFile);
         
-        echo get_class($options);
-        
         $dsn = (string) $options->dsn;
         
         $this->_ensure($dsn, 'No DSN found');
         
         \myne\base\ApplicationRegistry::setDSN($dsn);
+        
+        $map = new ControllerMap();
+        
+        foreach ($options->control->view as $defaultView)
+        {
+            $viewStatus = trim($defaultView['status']);
+            
+            $status = \myne\command\Command::statuses($viewStatus);
+            
+            $map->addView('default', $status, (string) $defaultView);
+        }
+        
+        // ... more parse code omitted ...
+        \myne\base\ApplicationRegistry::setControllerMap($map);
     }
     
     private function _ensure($expression, $message)

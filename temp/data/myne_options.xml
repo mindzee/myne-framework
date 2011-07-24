@@ -4,8 +4,8 @@
 
     <control>
         <view>main</view>
-        <view status="CMD_OK">main</view>
-        <view status="CMD_ERROR">error</view>
+        <view status="COMMAND_OK">main</view>
+        <view status="COMMAND_ERROR">error</view>
 
         <command name="ListVenues">
             <view>listvenues</view>
@@ -18,7 +18,7 @@
 
         <command name="AddVenue">
             <view>addvenue</view>
-            <status value="CMD_OK">
+            <status value="COMMAND_OK">
               <forward>AddSpace</forward>
               <!--<forward>AddVenue</forward> -->
             </status>
@@ -26,7 +26,7 @@
 
         <command name="AddSpace">
             <view>addspace</view>
-            <status value="CMD_OK">
+            <status value="COMMAND_OK">
                 <forward>ListVenues</forward>
             </status>
         </command>

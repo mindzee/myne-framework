@@ -54,16 +54,25 @@ class FrontController
     }
     
     /**
-     * Instantiates new Request and Router oject's
+     * Instantiates new Request and ApplicationController oject's
      */
     public function handleRequest()
     {
         $request = new Request();
         
-        $router = new \myne\command\Router();
+        $applicationController = \myne\base\ApplicationRegistry::applicationController();
         
-        $command = $router->getCommand($request);
+        while ($command = $applicationController->getCommand($request))
+        {
+            $command->execute($request);
+        }
         
-        $command->execute($request);
+        $this->_invokeView($applicationController->getView($request));
+    }
+    
+    private function _invokeView($target)
+    {
+        include("myne/view/{$target}.php");
+        exit();
     }
 }
