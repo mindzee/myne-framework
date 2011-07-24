@@ -18,7 +18,7 @@ class ApplicationRegistry extends Registry
 {
     private static $_instance;
 
-    private $_freezeDir = 'data';
+    private $_freezeDir = 'temp/data';
 
     private $_values = array();
 
@@ -98,9 +98,6 @@ class ApplicationRegistry extends Registry
         if (!isset($instance->applicationController))
         {
             $controllerMap = $instance->getControllerMap();
-            
-            var_dump($controllerMap);
-            die();
             
             $instance->applicationController = new \myne\controller\ApplicationController($controllerMap);
         }
