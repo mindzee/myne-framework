@@ -60,7 +60,7 @@ class FrontController
     {
         $request = new Request();
         
-        $applicationController = \myne\base\ApplicationRegistry::applicationController();
+        $applicationController = \myne\base\ApplicationRegistry::getApplicationController();
         
         while ($command = $applicationController->getCommand($request))
         {

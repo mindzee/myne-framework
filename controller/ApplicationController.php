@@ -36,7 +36,7 @@ class ApplicationController
         
         if (!self::$_baseCommand)
         {
-            self::$_baseCommand = new \ReflectionClass('\myne\command\Command');
+            self::$_baseCommand = new \ReflectionClass('\\myne\\command\\Command');
             self::$_defaultCommand = new \myne\command\DefaultCommand();
         }
     }

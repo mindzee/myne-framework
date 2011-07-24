@@ -7,6 +7,7 @@
 namespace myne\base;
 
 require_once('base/Registry.php');
+require_once('controller/ApplicationController.php');
 
 /**
  * Description of ApplicationRegistry
@@ -88,5 +89,29 @@ class ApplicationRegistry extends Registry
     public static function setDSN($dsn)
     {
         self::getInstance()->_set('dsn', $dsn);
+    }
+    
+    public static function getApplicationController()
+    {
+        $instance = self::getInstance();
+        
+        if (!isset($instance->applicationController))
+        {
+            $controllerMap = $instance->getControllerMap();
+            
+            $instance->applicationController = new \myne\controller\ApplicationController($controllerMap);
+        }
+        
+        return $instance->applicationController;
+    }
+    
+    public function setControllerMap(\myne\controller\ControllerMap $controllerMap)
+    {
+        self::getInstance()->_set('ControllerMap', $controllerMap);
+    }
+    
+    public function getControllerMap()
+    {
+        return self::getInstance()->_get('ControllerMap');
     }
 }
