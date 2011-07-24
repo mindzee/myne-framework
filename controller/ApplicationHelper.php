@@ -9,16 +9,36 @@ require_once('base/ApplicationRegistry.php');
 require_once('base/ApplicationException.php');
 
 /**
- *
+ * Loads application configuration 
  */
 class ApplicationHelper
 {
+    /**
+     * ApplicationHelper instance
+     * 
+     * @var ApplicationHelper 
+     */
     private static $_instance;
     
+    /**
+     * Path to the configuration file
+     * 
+     * @var string
+     */
     private $_configFile = 'temp/data/myne_options.xml';
     
+    /**
+     * Constructor 
+     * 
+     * Forbidden to outside classes
+     */
     private function __construct() {}
     
+    /**
+     * Get's ApplicationHelper instance
+     * 
+     * @return ApplicationHelper
+     */
     public static function getInstance()
     {
         if (!self::$_instance)
@@ -29,10 +49,15 @@ class ApplicationHelper
         return self::$_instance;
     }
     
+    /**
+     *
+     * @return void
+     */
     public function init()
     {
         $dsn = \myne\base\ApplicationRegistry::getDSN();
         
+        // if DSN file already exists do nothing
         if (!is_null($dsn))
         {
             return;

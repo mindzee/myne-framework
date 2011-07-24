@@ -6,7 +6,7 @@ require_once('command/Command.php');
 require_once('command/DefaultCommand.php');
 require_once('controller/Request.php');
 
-class CommandResolver
+class Router
 {
     private static $_baseCommand;
     
