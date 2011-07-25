@@ -17,12 +17,12 @@ require_once('command/Router.php');
  */
 class FrontController
 {
-    private $_applicationHelper;
-    
     /**
      * Contructor
      * 
-     * Inittialized when run() method get's invoked
+     * Forbidden to outside instantiation
+     * 
+     * @access private
      */
     private function __construct() {}
     
@@ -30,6 +30,7 @@ class FrontController
      * Method starts the application process
      * 
      * @return void
+     * @access public
      */
     public static function run()
     {
@@ -45,6 +46,7 @@ class FrontController
      * calls its init() method 
      * 
      * @return void
+     * @access public
      */
     public function init()
     {
@@ -54,7 +56,10 @@ class FrontController
     }
     
     /**
-     * Instantiates new Request and ApplicationController oject's
+     * Handles the Request
+     * 
+     * @return void
+     * @access public
      */
     public function handleRequest()
     {
@@ -70,9 +75,13 @@ class FrontController
         $this->_invokeView($applicationController->getView($request));
     }
     
+    /**
+     *
+     * @param type $target 
+     */
     private function _invokeView($target)
     {
-        include("myne/view/{$target}.php");
+        include("view/{$target}.php");
         exit();
     }
 }

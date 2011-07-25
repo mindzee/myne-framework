@@ -3,12 +3,15 @@
 namespace myne\controller;
 
 require_once('base/RequestRegistry.php');
+require_once('command/Command.php');
 
 class Request
 {
     private $_properties;
     
     private $_feedback = array();
+    
+    private $_lastCommand;
     
     public function __construct()
     {
@@ -19,6 +22,7 @@ class Request
     
     public function init()
     {
+        // if it's GET request
         if (isset($_SERVER['REQUEST_METHOD']))
         {
             $this->_properties = $_REQUEST;
@@ -63,6 +67,16 @@ class Request
     public function getFeedbackString($separator = "\n")
     {
         return implode($separator, $this->_feedback);
+    }
+    
+    public function setCommand(\myne\command\Command $command)
+    {
+        $this->_lastCommand = $command;
+    }
+    
+    public function getLastCommand()
+    {
+        return $this->_lastCommand;
     }
 }
 

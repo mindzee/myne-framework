@@ -6,6 +6,11 @@ require_once('controller/Request.php');
 
 abstract class Command
 {
+    /**
+     *
+     * @var array 
+     * @access private
+     */
     private static $_statusStrings = array(
         'COMMAND_DEFAULT'           => 0,
         'COMMAND_OK'                => 1,
@@ -13,8 +18,16 @@ abstract class Command
         'COMMAND_INSUFFICIENT_DATA' => 3,
     );
     
+    /**
+     *
+     * @var int
+     * @access private
+     */
     private $_status = 0;
     
+    /**
+     * Constructor
+     */
     final function __construct() {}
     
     public function execute(\myne\controller\Request $request)

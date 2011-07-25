@@ -18,6 +18,7 @@ class ApplicationHelper
      * ApplicationHelper instance
      * 
      * @var ApplicationHelper 
+     * @access private
      */
     private static $_instance;
     
@@ -31,7 +32,9 @@ class ApplicationHelper
     /**
      * Constructor 
      * 
-     * Forbidden to outside classes
+     * Forbidden to outside instantiated
+     * 
+     * @access private
      */
     private function __construct() {}
     
@@ -39,6 +42,8 @@ class ApplicationHelper
      * Get's ApplicationHelper instance
      * 
      * @return ApplicationHelper
+     * @access public
+     * @static
      */
     public static function getInstance()
     {
@@ -53,12 +58,13 @@ class ApplicationHelper
     /**
      *
      * @return void
+     * @access public
      */
     public function init()
     {
         $dsn = \myne\base\ApplicationRegistry::getDSN();
         
-        // if DSN file already exists do nothing
+         //if DSN file already exists do nothing
         if (!is_null($dsn))
         {
             return;
@@ -67,6 +73,9 @@ class ApplicationHelper
         $this->_getOptions();
     }
     
+    /**
+     * Gets configuration information
+     */
     private function _getOptions()
     {
         $this->_ensure(file_exists($this->_configFile), 'Could not find options file');
@@ -92,10 +101,16 @@ class ApplicationHelper
             $controllerMap->addView('default', $status, (string) $defaultView);
         }
         
-        // ... more parse code omitted ...
         \myne\base\ApplicationRegistry::setControllerMap($controllerMap);
     }
     
+    /**
+     * Ensures that an expression is true
+     * 
+     * @param mixed $expression
+     * @param string $message 
+     * @throws ApplicationException
+     */
     private function _ensure($expression, $message)
     {
         if (!$expression)

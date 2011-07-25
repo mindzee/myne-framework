@@ -18,7 +18,5 @@ class DefaultCommand extends Command
     public function doExecute(\myne\controller\Request $request)
     {
         $request->addFeedback('Welcome to myne');
-
-        include('view/main.php');
     }
 }

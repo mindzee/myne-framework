@@ -16,16 +16,47 @@ require_once('controller/ApplicationController.php');
  */
 class ApplicationRegistry extends Registry
 {
+    /**
+     *
+     * @var ApplicationRegistry
+     * @access private 
+     */
     private static $_instance;
-
-    private $_freezeDir = 'data';
-
+    
+    /**
+     *
+     * @var string 
+     */
+    private $_dataDir = 'data';
+    
+    /**
+     *
+     * @var array 
+     */
     private $_values = array();
-
+    
+    /**
+     *
+     * @var array
+     */
     private $_modificationTimes = array();
-
+    
+    /**
+     * Constructor
+     * 
+     * Forbidden to outside instantiation
+     * 
+     * @access private
+     */
     private function __construct() {}
-
+    
+    /**
+     * Get's ApplicationRegistry instance
+     * 
+     * @return ApplicationRegistry
+     * @access public
+     * @static
+     */
     public static function getInstance()
     {
         if (!isset(self::$_instance))
@@ -35,16 +66,21 @@ class ApplicationRegistry extends Registry
 
         return self::$_instance;
     }
-
+    
+    /**
+     *
+     * @param string $key
+     * @return type 
+     */
     protected function _get($key)
     {
-        $path = $this->_freezeDir . DIRECTORY_SEPARATOR . $key;
+        $path = $this->_dataDir . DIRECTORY_SEPARATOR . $key;
 
         if (file_exists($path))
         {
             clearstatcache();
 
-            //patikrina kada failas buvo redaguotas
+            // when the file was modified
             $modificationTime = filemtime($path);
 
             if (!isset($this->_modificationTimes[$key]))
@@ -74,7 +110,7 @@ class ApplicationRegistry extends Registry
     {
         $this->_values[$key] = $value;
 
-        $path = $this->_freezeDir . DIRECTORY_SEPARATOR . $key;
+        $path = $this->_dataDir . DIRECTORY_SEPARATOR . $key;
 
         file_put_contents($path, serialize($value));
 
